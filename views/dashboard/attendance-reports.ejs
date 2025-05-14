@@ -1,0 +1,28 @@
+<% Object.keys(groupedAttendance).forEach(date => { %>
+  <h4 class="mt-5"><%= new Date(date).toLocaleDateString('en-CA') %></h4>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Teacher</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% groupedAttendance[date].forEach(report => { %>
+        <tr>
+          
+          <td><%= report.teacher?.fullName || 'N/A' %></td>
+          <td><%= report.status %></td>
+          <td>
+            <a href="/attendance/edit/<%= report._id %>" class="btn btn-sm btn-primary">Edit</a>
+            <form action="/attendance/delete/<%= report._id %>" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this record?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% }) %>

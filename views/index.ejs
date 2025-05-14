@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLMS - MPC | Home </title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#800000',secondary:''},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .hero-section {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.9) 40%, rgba(255, 255, 255, 0.5) 70%, rgba(255, 255, 255, 0.2) 100%), url('https://readdy.ai/api/search-image?query=A%20diverse%20group%20of%20Sri%20Lankan%20students%20in%20a%20bright%2C%20modern%20classroom%20using%20tablets%20and%20computers.%20The%20students%20are%20wearing%20school%20uniforms%20and%20are%20engaged%20in%20digital%20learning.%20The%20classroom%20has%20large%20windows%20with%20natural%20light%20coming%20in.%20Some%20teachers%20are%20helping%20students.%20The%20scene%20shows%20a%20blend%20of%20traditional%20Sri%20Lankan%20educational%20elements%20with%20modern%20technology.%20The%20image%20has%20a%20clean%2C%20professional%20look%20with%20soft%20natural%20lighting.&width=1600&height=900&seq=123456&orientation=landscape');
+            background-size: cover;
+            background-position: center;
+        }
+        input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <span class="text-2xl font-['Pacifico'] text-primary">MPC</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="/login" class="px-5 py-2 border border-primary text-primary font-medium !rounded-button hover:bg-gray-50 transition duration-300 whitespace-nowrap">Login</a>
+                <a href="/register" class="px-5 py-2 bg-primary text-white font-medium !rounded-button hover:bg-primary/90 transition duration-300 whitespace-nowrap">Register</a>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div class="md:hidden">
+                <button class="w-10 h-10 flex items-center justify-center text-gray-700">
+                    <i class="ri-menu-line ri-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen pt-16 flex items-center">
+        <div class="container mx-auto px-4 w-full">
+            <div class="max-w-3xl mx-auto md:mx-0 md:ml-16 py-20">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Empowering Education Through Technology</h1>
+                <p class="text-lg md:text-xl text-gray-700 mb-8">A centralized platform for students, teachers, and parents across Sri Lanka</p>
+                <a href="/login" class="inline-block px-8 py-3 bg-primary text-white font-medium text-lg !rounded-button hover:bg-primary/90 transition duration-300 whitespace-nowrap">Login to Continue</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Our platform provides everything you need for effective digital learning and teaching</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                        <i class="ri-book-open-line ri-lg text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Digital Textbooks</h3>
+                    <p class="text-gray-600">Access digital textbooks and lessons aligned with the Sri Lankan curriculum</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                        <i class="ri-file-list-3-line ri-lg text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Assignments & Quizzes</h3>
+                    <p class="text-gray-600">Submit assignments and take quizzes online with instant feedback</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                        <i class="ri-line-chart-line ri-lg text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Progress Tracking</h3>
+                    <p class="text-gray-600">Track academic progress, attendance, and performance metrics</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                        <i class="ri-message-3-line ri-lg text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Communication</h3>
+                    <p class="text-gray-600">Connect with teachers, students, and parents through secure messaging</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Hear from teachers and students across Sri Lanka</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-primary font-bold">MS</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Malini Samaraweera</h4>
+                            <p class="text-sm text-gray-500">Science Teacher, Colombo</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"This platform has transformed how I teach science. My students are more engaged with the interactive content, and I can easily track their progress."</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-primary font-bold">RP</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Rajith Perera</h4>
+                            <p class="text-sm text-gray-500">Student, Grade 10, Kandy</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"I love being able to access all my textbooks on my tablet. The practice quizzes have helped me improve my math scores significantly."</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-primary font-bold">NF</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Nirmala Fernando</h4>
+                            <p class="text-sm text-gray-500">Parent, Galle</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"As a parent, I appreciate being able to monitor my daughter's assignments and communicate with her teachers easily. It keeps me involved in her education."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Ready to Transform Education?</h2>
+                <p class="text-lg text-gray-600 mb-8">Join thousands of schools across Sri Lanka already using our platform</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#" class="px-8 py-3 bg-primary text-white font-medium !rounded-button hover:bg-primary/90 transition duration-300 whitespace-nowrap">Register Your School</a>
+                    <a href="#" class="px-8 py-3 border border-primary text-primary font-medium !rounded-button hover:bg-gray-50 transition duration-300 whitespace-nowrap">Request Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <!-- Column 1 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-mail-line text-primary"></i>
+                            </div>
+                            <span>support@lmssrilanka.edu.lk</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-phone-line text-primary"></i>
+                            </div>
+                            <span>+94 11 2345678</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-map-pin-line text-primary"></i>
+                            </div>
+                            <span>Ministry of Education, Battaramulla, Sri Lanka</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Column 2 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-primary transition duration-300">About Us</a></li>
+                        <li><a href="#" class="hover:text-primary transition duration-300">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-primary transition duration-300">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-primary transition duration-300">Help Center</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Stay Connected</h3>
+                    <p class="text-gray-600 mb-4">Subscribe to our newsletter for updates</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 border border-gray-300 rounded-l !rounded-button w-full" />
+                        <button class="px-4 py-2 bg-primary text-white !rounded-button rounded-l-none whitespace-nowrap">Subscribe</button>
+                    </div>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full text-primary hover:bg-primary/20 transition duration-300">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full text-primary hover:bg-primary/20 transition duration-300">
+                            <i class="ri-twitter-fill"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full text-primary hover:bg-primary/20 transition duration-300">
+                            <i class="ri-youtube-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-8 text-center text-gray-600">
+                <p>© 2025 SLMS Sri Lanka. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.ri-menu-line').parentElement;
+            
+            mobileMenuButton.addEventListener('click', function() {
+                // Mobile menu functionality would go here
+                alert('Mobile menu clicked');
+            });
+        });
+    </script>
+</body>
+</html>

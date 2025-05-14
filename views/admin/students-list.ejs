@@ -1,0 +1,58 @@
+
+
+<div class="container mt-4">
+  <h2>All Students (Grouped by Registration Date)</h2>
+
+  <form method="GET" action="/students" class="mb-4">
+  <label for="grade" class="font-semibold mr-2">Filter by Grade:</label>
+  <select name="grade" id="grade" class="border p-1 rounded" onchange="this.form.submit()">
+    <option value="">All Grades</option>
+    <% for (let g = 6; g <= 13; g++) { %>
+      <option value="<%= g %>" <%= selectedGrade == g ? 'selected' : '' %>>Grade <%= g %></option>
+    <% } %>
+  </select>
+</form>
+
+
+  <% Object.keys(groupedStudents).forEach(date => { %>
+    <h4 class="mt-4 text-primary"><%= date %></h4>
+    
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+        <th>Profile Picture</th>
+        <th>Full Name</th>
+        <th>Date of Birth</th>
+        <th>Class</th>
+        <th>Gender</th>
+        <th>Parent / Guardian Name</th>
+        <th>Contact</th>
+        <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% groupedStudents[date].forEach(student => { %>
+          <tr>
+            <td>
+  <% if (student.profilePicture) { %>
+          <img src="<%= student.profilePicture %>" alt="Profile Picture" width="100" height="100">
+        <% } else { %>
+          <img src="/images/default-user.png" alt="No Image" width="100" height="100">
+        <% } %>
+            <td><%= student.fullName %></td>
+            <td><%= new Date(student.dob).toLocaleDateString('en-GB', {
+  day: '2-digit', month: 'short', year: 'numeric'
+}) %></td>
+            <td><%= student.className %></td>
+            <td><%= student.gender %></td>
+            <td><%= student.parentName %></td>
+            <td><%= student.contact %></td>
+            <td><%= student.email %></td>
+            <td><a href="/edit-student/<%= student._id %>" class="btn btn-sm btn-warning">Edit</a></td>
+            <td><a href="/delete-student/<%= student._id %>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% }) %>
+</div>

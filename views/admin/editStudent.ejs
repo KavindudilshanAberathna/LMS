@@ -1,0 +1,53 @@
+<h2>Edit Student</h2>
+
+<form action="/edit-student/<%= student._id %>" method="POST" enctype="multipart/form-data">
+  <div>
+    <label>Full Name:</label>
+    <input type="text" name="fullName" value="<%= student.fullName %>" required>
+  </div>
+
+  <div>
+    <label>Date of Birth:</label>
+    <input type="date" name="dob" value="<%= student.dob.toISOString().substring(0, 10) %>" required>
+  </div>
+
+  <div>
+    <label>Gender:</label>
+    <select name="gender" required>
+      <option value="Male" <%= student.gender === 'Male' ? 'selected' : '' %>>Male</option>
+      <option value="Female" <%= student.gender === 'Female' ? 'selected' : '' %>>Female</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Parent Name:</label>
+    <input type="text" name="parentName" value="<%= student.parentName %>" required>
+  </div>
+
+  <div>
+    <label>Contact:</label>
+    <input type="text" name="contact" value="<%= student.contact %>" required>
+  </div>
+
+  <div>
+    <label>Email:</label>
+    <input type="email" name="email" value="<%= student.email %>" required>
+  </div>
+
+  <div>
+    <label>Class Name:</label>
+    <input type="text" name="className" value="<%= student.className %>" required>
+  </div>
+
+  <div>
+    <label>Profile Picture:</label>
+    <input type="file" name="profilePicture">
+    <% if (student.profilePicture) { %>
+      <img src="<%= student.profilePicture %>" width="100" alt="Profile">
+    <% } else { %>
+      <p>No image uploaded</p>
+    <% } %>
+  </div>
+
+  <button type="submit">Update</button>
+</form>

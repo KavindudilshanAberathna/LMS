@@ -1,0 +1,38 @@
+<div class="container mt-4">
+  <h2>Mark Teacher Attendance</h2>
+
+  <% if (success_msg) { %>
+    <div class="alert alert-success"><%= success_msg %></div>
+  <% } %>
+
+  <form action="/mark-attendance" method="POST">
+    <div class="mb-3">
+      <label for="teacherId" class="form-label">Teacher</label>
+      <select name="teacherId" id="teacherId" class="form-select" required>
+        <% if (teachers && teachers.length > 0) { %>
+          <% teachers.forEach(teacher => { %>
+            <option value="<%= teacher._id %>"><%= teacher.fullName %></option>
+          <% }) %>
+        <% } else { %>
+          <option disabled>No teachers available</option>
+        <% } %>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <select name="status" class="form-select" required>
+        <option value="Present" >Present</option>
+        <option value="Absent">Absent</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" name="date" class="form-control"
+        value="<%= new Date().toISOString().split('T')[0] %>">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Mark Attendance</button>
+  </form>
+</div>

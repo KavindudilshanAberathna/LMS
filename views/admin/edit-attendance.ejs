@@ -1,0 +1,22 @@
+<div class="container mt-5">
+  <h2>Edit Attendance</h2>
+  <form action="/attendance/edit/<%= attendance._id %>" method="POST">
+    <div class="mb-3">
+      <label class="form-label">Teacher</label>
+      <input type="text" class="form-control" value="<%= attendance.teacher?.fullName || 'N/A' %>" disabled>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Status</label>
+      <select name="status" class="form-select" required>
+        <option value="Present" <%= attendance.status === 'Present' ? 'selected' : '' %>>Present</option>
+        <option value="Absent" <%= attendance.status === 'Absent' ? 'selected' : '' %>>Absent</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Date</label>
+      <input type="date" name="date" class="form-control" value="<%= new Date(attendance.date).toISOString().split('T')[0] %>" required>
+    </div>
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a href="/attendance-reports" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
