@@ -1,0 +1,26 @@
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-4">Edit Subject Assignment</h1>
+
+  <form action="/edit-subject-assignment/<%= assignment._id %>" method="POST" class="bg-white p-4 rounded shadow max-w-md">
+    <div class="mb-4">
+      <label class="block mb-1 font-semibold">Teacher:</label>
+      <p class="bg-gray-100 p-2 rounded"><%= assignment.teacher.fullName %> (<%= assignment.teacher.email %>)</p>
+    </div>
+
+    <div class="mb-4">
+      <label class="block mb-1 font-semibold" for="subject">Subject:</label>
+      <select name="subject" class="w-full border p-2 rounded" required>
+        <% allSubjects.forEach(sub => { %>
+          <option value="<%= sub %>" <%= assignment.subject === sub ? 'selected' : '' %>><%= sub %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="block mb-1 font-semibold" for="grade">Grade:</label>
+      <input type="number" name="grade" class="w-full border p-2 rounded" value="<%= assignment.grade %>" required min="6" max="13">
+    </div>
+
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
+  </form>
+</div>

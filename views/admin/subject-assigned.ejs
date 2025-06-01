@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assigned Subjects</title>
+</head>
+<body>
+  <h1>Assigned Subjects (Grouped by Date)</h1>
+
+  <% Object.keys(groupedAssignments).forEach(date => { %>
+    <h2><%= date %></h2>
+    <ul>
+      <% groupedAssignments[date].forEach(a => { %>
+        <li>
+          <strong><%= a.teacher.fullName %></strong> - <%= a.subject %>
+        </li>
+      <% }) %>
+    </ul>
+  <% }) %>
+</body>
+</html>

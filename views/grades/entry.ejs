@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLMS - MPC | Enter marks </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala&family=Noto+Sans+Tamil&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#800000',secondary:'#4B5563'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Poppins', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+        }
+        .sinhala {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+        }
+        .tamil {
+            font-family: 'Noto Sans Tamil', sans-serif;
+        }
+        .sidebar-item.active {
+            background-color: rgba(128, 0, 0, 0.1);
+            color: #800000;
+            border-left: 3px solid #800000;
+        }
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #800000;
+            border-color: #800000;
+        }
+        input[type="checkbox"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 6px;
+            height: 10px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+        }
+        .language-dropdown {
+            position: relative;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            min-width: 150px;
+        }
+        .language-dropdown:hover .language-options {
+            display: block;
+        }
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            min-width: 200px;
+        }
+        .profile-dropdown:hover .profile-options {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 h-16 bg-primary shadow-md z-50 flex items-center justify-between px-4">
+        <div class="flex items-center">
+            <button id="sidebar-toggle" class="md:hidden mr-3 w-8 h-8 flex items-center justify-center text-white">
+                <i class="ri-menu-line ri-lg"></i>
+            </button>
+            <div class="font-['Pacifico'] text-white text-2xl">MPC</div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 flex items-center justify-center text-white relative">
+                <i class="ri-notification-3-line ri-lg"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center text-white relative">
+                <i class="ri-message-3-line ri-lg"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+            </div>
+            <div class="profile-dropdown">
+                <button class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                        <img src="/uploads/<%= user.profilePicture %>"  alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                </button>
+                <div class="profile-options">
+                    <div class="px-4 py-3 border-b border-gray-200">
+                        <p class="text-sm font-medium"><%= user.fullName %></p>
+                        <p class="text-xs text-gray-500"><%= user.role %></p>
+                    </div>
+                    <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100">
+                        <i class="ri-user-line mr-2"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="/logout" class="flex items-center px-4 py-2 hover:bg-gray-100 text-red-600">
+                        <i class="ri-logout-box-line mr-2"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <% if (user && user.role === 'admin') { %>
+    <%- include('../partials/admingradeentersidebar') %>
+    <% } else if (user && user.role === 'teacher') { %>
+    <%- include('../partials/teachergradeentry') %>
+    <% } %>
+
+    <!-- Main Content -->
+    <main class="pt-16 md:pl-60 min-h-screen">
+        <div class="p-4 md:p-6 max-w-7xl mx-auto">
+            <div class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-[#800000] mb-6">Grade Entry</h2>
+
+  <form id="gradeForm" method="GET" action="/grades/entry" class="space-y-4">
+    <div>
+      <label for="gradeSelect" class="block mb-1 font-medium text-gray-700">Grade:</label>
+      <select id="gradeSelect" name="grade" required
+              class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#800000]">
+        <option value="">Select</option>
+        <% assignedGrades.forEach(grade => { %>
+          <option value="<%= grade %>" <%= grade === selectedGrade ? 'selected' : '' %>><%= grade %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div>
+      <label for="subjectSelect" class="block mb-1 font-medium text-gray-700">Subject:</label>
+      <select id="subjectSelect" name="subject" required
+              class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#800000]">
+        <option value="">Select</option>
+        <% assignedSubjects.forEach(sub => { %>
+          <option value="<%= sub %>" <%= sub === selectedSubject ? 'selected' : '' %>><%= sub %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit"
+              class="bg-[#800000] text-white font-semibold px-6 py-2 rounded hover:bg-[#9b1c1c] transition">
+        Load Students
+      </button>
+    </div>
+  </form>
+
+  <% if (selectedGrade && selectedSubject && students.length === 0) { %>
+    <p class="mt-4 text-red-600 font-semibold">No students found for <%= selectedGrade %> - <%= selectedSubject %>.</p>
+  <% } %>
+
+  <% if (students && students.length > 0) { %>
+    <form method="POST" action="/grades/entry" class="mt-6 space-y-4 bg-gray-50 p-4 rounded">
+      <input type="hidden" name="grade" value="<%= selectedGrade %>">
+      <input type="hidden" name="subject" value="<%= selectedSubject %>">
+
+      <div>
+        <label for="term" class="block mb-1 font-medium text-gray-700">Term:</label>
+        <select name="term" id="term" required
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#800000]">
+          <option value="Term 1">Term 1</option>
+          <option value="Term 2">Term 2</option>
+          <option value="Final">Final</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="studentId" class="block mb-1 font-medium text-gray-700">Student:</label>
+        <select name="studentId" id="studentId" required
+                class="w-full border border-gray-300 rounded px-3 py-2 bg-white text-black focus:outline-none focus:ring-2 focus:ring-[#800000]">
+          <% students.forEach(stu => { %>
+            <option value="<%= stu._id %>"><%= stu.fullName %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div>
+        <label for="score" class="block mb-1 font-medium text-gray-700">Score:</label>
+        <input type="number" name="score" id="score" required min="0"
+               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#800000]">
+      </div>
+
+      <div>
+        <label for="maxScore" class="block mb-1 font-medium text-gray-700">Max Score:</label>
+        <input type="number" name="maxScore" id="maxScore" required min="1"
+               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#800000]">
+      </div>
+
+      <label class="block mb-1 font-medium text-gray-700">Comment:</label>
+    <textarea name="comment" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#800000]" placeholder="Enter your comment for this student"></textarea>
+
+      <div>
+        <button type="submit"
+                class="w-full bg-[#800000] text-white font-semibold px-6 py-2 rounded hover:bg-[#9b1c1c] transition">
+          Save Grade
+        </button>
+      </div>
+    </form>
+  <% } %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const gradeSelect = document.getElementById('gradeSelect');
+    const subjectSelect = document.getElementById('subjectSelect');
+    const form = document.getElementById('gradeForm');
+
+    gradeSelect.addEventListener('change', () => form.submit());
+    subjectSelect.addEventListener('change', () => form.submit());
+  });
+</script>
+
+        </div>
+        </main>
+        </body>
+        </html>

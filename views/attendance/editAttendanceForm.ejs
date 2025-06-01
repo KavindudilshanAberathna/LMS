@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Attendance</title>
+  <link href="/css/tailwind.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">Edit Attendance for <%= attendance.student.fullName %></h1>
+
+    <form action="/attendance/teacher/edit/<%= attendance._id %>" method="POST" class="space-y-4">
+      <div>
+        <label for="date" class="block font-semibold">Date</label>
+        <input 
+          type="date" 
+          id="date" 
+          name="date" 
+          value="<%= attendance.date.toISOString().substring(0, 10) %>" 
+          required
+          class="border rounded p-2 w-full"
+        />
+      </div>
+
+      <div>
+        <label for="status" class="block font-semibold">Status</label>
+        <select 
+          id="status" 
+          name="status" 
+          required
+          class="border rounded p-2 w-full"
+        >
+          <option value="Present" <%= attendance.status === 'Present' ? 'selected' : '' %>>Present</option>
+          <option value="Absent" <%= attendance.status === 'Absent' ? 'selected' : '' %>>Absent</option>
+          <option value="Late" <%= attendance.status === 'Late' ? 'selected' : '' %>>Late</option>
+        </select>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <button 
+          type="submit" 
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Update Attendance
+        </button>
+
+        <form 
+          action="/attendance/teacher/delete/<%= attendance._id %>" 
+          method="POST" 
+          onsubmit="return confirm('Are you sure you want to delete this attendance record?');"
+        >
+          <button 
+            type="submit" 
+            class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            Delete Attendance
+          </button>
+        </form>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

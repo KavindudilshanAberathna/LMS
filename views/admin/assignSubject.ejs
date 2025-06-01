@@ -1,0 +1,23 @@
+<form action="/assign-subject" method="POST">
+  <label>Subject:</label>
+  <select name="subject" required>
+    <% subjects.forEach(sub => { %>
+      <option value="<%= sub.name %>"><%= sub.name %></option>
+    <% }); %>
+  </select>
+
+  <label>Teacher:</label>
+  <select name="teacherId" required>
+    <% teachers.forEach(teacher => { %>
+      <option value="<%= teacher._id %>"><%= teacher.fullName %></option>
+    <% }); %>
+  </select>
+
+  <label>Class:</label>
+  <input type="text" name="className" placeholder="e.g., Grade 11" required />
+
+  <label>Section:</label>
+  <input type="text" name="section" placeholder="e.g., A" required />
+
+  <button type="submit">Assign</button>
+</form>

@@ -1,0 +1,67 @@
+
+
+
+
+<!-- Main Content -->
+<main class="pt-16 md:pl-60 min-h-screen">
+  <div class="p-4 md:p-6 max-w-4xl mx-auto bg-white rounded shadow">
+    <h1 class="text-2xl font-bold mb-4 text-[#800000]">Edit Content - <%= subjectName %> (Grade <%= grade %>)</h1>
+
+    <!-- Edit Form -->
+    <form action="/dashboard/teacher/subject/<%= subjectName %>/content/<%= content._id %>/edit?grade=<%= grade %>" method="POST" enctype="multipart/form-data">
+      <div class="mb-4">
+        <label class="block font-medium mb-1">Title</label>
+        <input type="text" name="title" value="<%= content.title %>" class="w-full border p-2 rounded" required>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-medium mb-1">Type</label>
+        <select name="type" class="w-full border p-2 rounded" id="typeSelect" required>
+          <option value="announcement" <%= content.type === 'announcement' ? 'selected' : '' %>>Announcement</option>
+          <option value="text" <%= content.type === 'text' ? 'selected' : '' %>>Text</option>
+          <option value="url" <%= content.type === 'url' ? 'selected' : '' %>>Link</option>
+          <option value="syllabus" <%= content.type === 'syllabus' ? 'selected' : '' %>>File</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-medium mb-1">Description</label>
+        <textarea name="description" rows="4" class="w-full border p-2 rounded" required><%= content.content %></textarea>
+      </div>
+
+      <div class="mb-4" id="urlField" <%= content.type === 'url' ? '' : 'display:none;' %>>
+        <label class="block font-medium mb-1">URL (if applicable)</label>
+        <input type="url" name="url" value="<%= content.url || '' %>" class="w-full border p-2 rounded">
+      </div>
+
+      <div class="mb-4" id="fileField" <%= content.type === 'syllabus' ? '' : 'display:none;' %>>
+        <label class="block font-medium mb-1">Upload New File (optional)</label>
+        <input type="file" name="file" class="w-full">
+        <% if (content.filePath) { %>
+          <p class="text-sm text-gray-500 mt-1">Current File: 
+            <a href="/<%= content.filePath %>" target="_blank" class="text-blue-600 underline">View</a>
+          </p>
+        <% } %>
+      </div>
+
+      <button type="submit" class="bg-[#800000] text-white px-4 py-2 rounded hover:bg-[#a00000] transition">Update Content</button>
+      <a href="/dashboard/teacher/subject/<%= subjectName %>?grade=<%= grade %>" class="ml-4 text-blue-600 underline">Cancel</a>
+    </form>
+  </div>
+</main>
+
+<script>
+  // Show/hide URL and File fields based on type
+  const typeSelect = document.getElementById('typeSelect');
+  const urlField = document.getElementById('urlField');
+  const fileField = document.getElementById('fileField');
+
+  function toggleFields() {
+    const selected = typeSelect.value;
+    urlField.style.display = selected === 'url' ? 'block' : 'none';
+    fileField.style.display = selected === 'syllabus' ? 'block' : 'none';
+  }
+
+  typeSelect.addEventListener('change', toggleFields);
+  document.addEventListener('DOMContentLoaded', toggleFields);
+</script>

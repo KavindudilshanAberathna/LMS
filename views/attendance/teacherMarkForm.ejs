@@ -1,0 +1,72 @@
+<form action="/attendance/teacher/mark" method="POST">
+  <label>Select Subject & Grade</label>
+  <select name="subject" id="subject-select" required>
+    <% assignments.forEach(a => { %>
+      <option value="<%= a.subject %>_<%= a.grade %>" 
+        <%= selectedAssignment.subject === a.subject && selectedAssignment.grade === a.grade ? 'selected' : '' %>>
+        <%= a.subject %> (Grade <%= a.grade %>)
+      </option>
+    <% }); %>
+  </select>
+
+  <label>Date:</label>
+  <input type="date" name="date" required>
+
+  <div id="student-list">
+    <% students.forEach((student, index) => { %>
+      <div>
+        <input type="hidden" name="students[<%= index %>][studentId]" value="<%= student._id %>">
+        <span><%= student.fullName %> (Class: <%= student.className %>)</span>
+        <select name="students[<%= index %>][status]" required>
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+          <option value="Late">Late</option>
+        </select>
+      </div>
+    <% }) %>
+  </div>
+
+  <button type="submit">Mark Attendance</button>
+</form>
+
+<script>
+  const subjectSelect = document.querySelector('select[name="subject"]');
+  const studentListDiv = document.getElementById('student-list');
+
+  subjectSelect.addEventListener('change', async (e) => {
+    const selectedValue = e.target.value; // e.g. "Science_7"
+    const grade = selectedValue.split('_')[1];
+
+    if (!grade) return;
+
+    try {
+      const response = await fetch(`/attendance/teacher/students?grade=${grade}`);
+      const data = await response.json();
+
+      if (data.students) {
+        // Clear old students
+        studentListDiv.innerHTML = '';
+
+        data.students.forEach(student => {
+          // For each student, add a checkbox or radio inputs for Present/Absent/Late
+          const studentHtml = `
+            <div>
+              <label>${student.fullName} (${student.className})</label>
+              <select name="students[${student._id}]" required>
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+                <option value="Late">Late</option>
+              </select>
+            </div>
+          `;
+          studentListDiv.insertAdjacentHTML('beforeend', studentHtml);
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load students:', error);
+    }
+  });
+
+  // Optionally trigger change event on page load to load students for default selection
+  subjectSelect.dispatchEvent(new Event('change'));
+</script>

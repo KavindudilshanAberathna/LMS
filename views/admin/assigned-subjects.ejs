@@ -1,0 +1,50 @@
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-4">Assigned Subjects</h1>
+
+    <form method="GET" action="/assigned-subjects" class="mb-4">
+    <label for="grade" class="font-semibold mr-2">Filter by Grade:</label>
+    <select name="grade" id="grade" class="border p-1 rounded" onchange="this.form.submit()">
+        <option value="">All Grades</option>
+        <% for (let g = 6; g <= 13; g++) { %>
+        <option value="<%= g %>" <%= selectedGrade == g ? 'selected' : '' %>>Grade <%= g %></option>
+        <% } %>
+    </select>
+    </form>
+
+  <% Object.keys(groupedAssignments).forEach(date => { %>
+    <div class="mb-6 bg-white shadow rounded p-4">
+      <h2 class="text-xl font-semibold text-blue-600 mb-2">Date: <%= date %></h2>
+
+      <table class="w-full border text-left">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-2 border">Teacher</th>
+            <th class="p-2 border">Email</th>
+            <th class="p-2 border">Subject</th>
+            <th class="p-2 border">Grade</th>
+            <th class="p-2 border">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% groupedAssignments[date].forEach(assign => { %>
+            <tr class="border-t">
+            <td class="p-2 border"><%= assign.teacher.fullName %></td>
+            <td class="p-2 border"><%= assign.teacher.email %></td>
+            <td class="p-2 border"><%= assign.subject %></td>
+            <td class="p-2 border">Grade <%= assign.grade %></td>
+            <td class="p-2 border">
+            <!-- Edit Button -->
+            <a href="/dashboard/admin/edit-subject-assignment/<%= assign._id %>" class="text-yellow-600 hover:underline mr-3">Edit</a>
+                
+            <!-- Delete Form -->
+            <form action="/dashboard/admin/delete-subject-assignment/<%= assign._id %>" method="POST" class="inline">
+            <button type="submit" onclick="return confirm('Are you sure?')" class="text-red-600 hover:underline">Delete</button>
+            </form>
+            </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% }) %>
+</div>

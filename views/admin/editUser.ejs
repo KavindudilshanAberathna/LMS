@@ -1,0 +1,43 @@
+<h2 class="text-xl font-bold mb-4">Edit User</h2>
+
+<form action="/dashboard/admin/users/edit/<%= user._id %>" method="POST" enctype="multipart/form-data" class="space-y-4">
+  <div>
+    <label>Full Name:</label>
+    <input type="text" name="fullName" value="<%= user.fullName %>" required class="input" />
+  </div>
+
+  <div>
+    <label>Email:</label>
+    <input type="email" name="email" value="<%= user.email %>" required class="input" />
+  </div>
+
+  <div>
+    <label>Role:</label>
+    <select name="role" class="input">
+      <option value="student" <%= user.role === 'student' ? 'selected' : '' %>>Student</option>
+      <option value="teacher" <%= user.role === 'teacher' ? 'selected' : '' %>>Teacher</option>
+      <option value="parent" <%= user.role === 'parent' ? 'selected' : '' %>>Parent</option>
+      <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Class:</label>
+    <input type="text" name="className" value="<%= user.className || '' %>" class="input" />
+  </div>
+
+  <div>
+    <label>Stream:</label>
+    <input type="text" name="stream" value="<%= user.stream || '' %>" class="input" />
+  </div>
+
+  <div>
+    <label>Profile Picture:</label><br />
+    <% if (user.profilePicture) { %>
+      <img src="/<%= user.profilePicture %>" class="h-16 w-16 rounded-full object-cover mb-2" />
+    <% } %>
+    <input type="file" name="profilePicture" class="input" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>

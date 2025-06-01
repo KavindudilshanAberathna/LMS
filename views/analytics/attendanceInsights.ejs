@@ -1,0 +1,31 @@
+<h2 class="text-2xl font-bold mb-4">Attendance Insights - <%= student.fullName %></h2>
+
+<table class="table-auto w-full border border-collapse border-gray-300">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="border px-4 py-2">Subject</th>
+      <th class="border px-4 py-2">Present</th>
+      <th class="border px-4 py-2">Total Classes</th>
+      <th class="border px-4 py-2">Attendance %</th>
+      <th class="border px-4 py-2">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% insights.forEach(insight => { %>
+      <tr class="<%= insight.atRisk ? 'bg-red-100' : '' %>">
+        <td class="border px-4 py-2"><%= insight.subject %></td>
+        <td class="border px-4 py-2"><%= insight.present %></td>
+        <td class="border px-4 py-2"><%= insight.total %></td>
+        <td class="border px-4 py-2"><%= insight.percent %> %</td>
+        <td class="border px-4 py-2">
+          <% if (insight.atRisk) { %>
+            <span class="text-red-600 font-bold">At Risk</span>
+          <% } else { %>
+            <span class="text-green-600">Good</span>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
