@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLMS - MPC | Parent Dashboard </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala&family=Noto+Sans+Tamil&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#800000',secondary:'#4B5563'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Poppins', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+        }
+        .sinhala {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+        }
+        .tamil {
+            font-family: 'Noto Sans Tamil', sans-serif;
+        }
+        .sidebar-item.active {
+            background-color: rgba(128, 0, 0, 0.1);
+            color: #800000;
+            border-left: 3px solid #800000;
+        }
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #800000;
+            border-color: #800000;
+        }
+        input[type="checkbox"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 6px;
+            height: 10px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+        }
+        .language-dropdown {
+            position: relative;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            min-width: 150px;
+        }
+        .language-dropdown:hover .language-options {
+            display: block;
+        }
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            min-width: 200px;
+        }
+        .profile-dropdown:hover .profile-options {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 h-16 bg-primary shadow-md z-50 flex items-center justify-between px-4">
+        <div class="flex items-center">
+            <button id="sidebar-toggle" class="md:hidden mr-3 w-8 h-8 flex items-center justify-center text-white">
+                <i class="ri-menu-line ri-lg"></i>
+            </button>
+            <div class="font-['Pacifico'] text-white text-2xl">MPC</div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 flex items-center justify-center text-white relative">
+                <i class="ri-notification-3-line ri-lg"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center text-white relative">
+                <i class="ri-message-3-line ri-lg"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+            </div>
+            <div class="profile-dropdown">
+                <button class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                        <img src="/uploads/<%= user.profilePicture %>" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                </button>
+                <div class="profile-options">
+                    <div class="px-4 py-3 border-b border-gray-200">
+                        <p class="text-sm font-medium"><%= user.fullName %></p>
+                        <p class="text-xs text-gray-500"><%= user.role %></p>
+                    </div>
+                    <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100">
+                        <i class="ri-user-line mr-2"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="/logout" class="flex items-center px-4 py-2 hover:bg-gray-100 text-red-600">
+                        <i class="ri-logout-box-line mr-2"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed left-0 top-16 bottom-0 w-60 bg-white shadow-lg z-40 overflow-y-auto transition-all duration-300">
+        <div class="py-4">
+            <ul>
+                <li>
+                    <a href="#" class="sidebar-item active flex items-center px-4 py-3 text-sm">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-book-open-line"></i>
+                        </div>
+                        <span>My Courses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-file-list-3-line"></i>
+                        </div>
+                        <span>Assignments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-calendar-check-line"></i>
+                        </div>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-bar-chart-line"></i>
+                        </div>
+                        <span>Grades & Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-book-2-line"></i>
+                        </div>
+                        <span>Digital Library</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-calendar-line"></i>
+                        </div>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-item flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-message-2-line"></i>
+                        </div>
+                        <span>Messages</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="pt-16 md:pl-60 min-h-screen">
+        <div class="p-4 md:p-6 max-w-7xl mx-auto">
+            <!-- Welcome Section -->
+            <div class="bg-white rounded shadow-sm p-6 mb-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-semibold mb-1">Welcome, <%= user.fullName %></h1>
+                        <p class="text-gray-600"><%= user.role %></p>
+                        <p class="text-gray-500 text-sm mt-1">Tuesday, April 29, 2025</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <button class="bg-primary text-white px-4 py-2 rounded-button flex items-center !whitespace-nowrap">
+                            <i class="ri-calendar-2-line mr-2"></i>
+                            <span>View Timetable</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <% if (success_msg) { %>
+    <div class="fixed top-5 right-5 bg-green-100 text-green-800 px-5 py-3 rounded-lg shadow-lg z-50 animate-slideIn flash-message">
+        <i class="ri-check-line mr-2"></i> <%= success_msg %>
+    </div>
+    <% } %>
+
+    <script>
+    setTimeout(() => {
+        const flashMessage = document.querySelector('.flash-message');
+        if (flashMessage) flashMessage.remove();
+    }, 4000);
+    </script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+            }
+            
+            // Performance chart
+            const chartDom = document.getElementById('performance-chart');
+            if (chartDom) {
+                const myChart = echarts.init(chartDom);
+                const option = {
+                    animation: false,
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        textStyle: {
+                            color: '#1f2937'
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        top: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Term 1', 'Term 2', 'Term 3', 'Current'],
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd'
+                            }
+                        },
+                        axisLabel: {
+                            color: '#1f2937'
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        min: 0,
+                        max: 100,
+                        interval: 20,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd'
+                            }
+                        },
+                        axisLabel: {
+                            color: '#1f2937',
+                            formatter: '{value}%'
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#eee'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Mathematics',
+                            type: 'line',
+                            smooth: true,
+                            symbol: 'none',
+                            lineStyle: {
+                                width: 3
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(87, 181, 231, 0.2)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(87, 181, 231, 0.0)'
+                                    }
+                                ])
+                            },
+                            data: [68, 72, 81, 85],
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        {
+                            name: 'Science',
+                            type: 'line',
+                            smooth: true,
+                            symbol: 'none',
+                            lineStyle: {
+                                width: 3
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(141, 211, 199, 0.2)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(141, 211, 199, 0.0)'
+                                    }
+                                ])
+                            },
+                            data: [75, 70, 65, 72],
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        {
+                            name: 'English',
+                            type: 'line',
+                            smooth: true,
+                            symbol: 'none',
+                            lineStyle: {
+                                width: 3
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    {
+                                        offset: 0,
+                                        color: 'rgba(251, 191, 114, 0.2)'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: 'rgba(251, 191, 114, 0.0)'
+                                    }
+                                ])
+                            },
+                            data: [82, 85, 88, 90],
+                            color: 'rgba(251, 191, 114, 1)'
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+                
+                window.addEventListener('resize', function() {
+                    myChart.resize();
+                });
+            }
+        });
+        
+        // Checkbox functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const taskItem = this.closest('div');
+                    if (this.checked) {
+                        taskItem.style.opacity = '0.6';
+                    } else {
+                        taskItem.style.opacity = '1';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

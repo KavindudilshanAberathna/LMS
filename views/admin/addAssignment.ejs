@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assign Teacher</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-[#800000]">
+  <div class="max-w-xl mx-auto p-6">
+    <h2 class="text-xl font-bold mb-4">Assign Teacher to Subject</h2>
+
+    <form action="/dashboard/admin/subjects/add-assignment" method="POST" class="space-y-4">
+      <!-- Hidden values -->
+      <input type="hidden" name="subjectId" value="<%= subject._id %>">
+      <input type="hidden" name="subjectName" value="<%= subject.name %>">
+
+      <!-- Subject Label -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Subject:</label>
+        <span class="font-semibold"><%= subject.name %></span>
+      </div>
+
+      <!-- Grade Selector -->
+      <div>
+        <label class="block text-sm font-medium mb-1" for="grade">Select Grade:</label>
+        <select name="grade" id="grade" required class="w-full border p-2 rounded">
+          <option value="">Choose Grade</option>
+          <% for (let i = 6; i <= 13; i++) { %>
+            <option value="<%= i %>">Grade <%= i %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <!-- Teacher Selector -->
+      <div>
+        <label class="block text-sm font-medium mb-1" for="teacherId">Select Teacher:</label>
+        <select name="teacherId" id="teacherId" required class="w-full border p-2 rounded">
+          <option value="">Choose Teacher</option>
+          <% teachers.forEach(teacher => { %>
+            <option value="<%= teacher._id %>"><%= teacher.fullName %> (<%= teacher.email %>)</option>
+          <% }) %>
+        </select>
+      </div>
+
+      <button type="submit" class="bg-[#800000] text-white px-4 py-2 rounded hover:bg-[#a52a2a]">Assign</button>
+    </form>
+  </div>
+</body>
+</html>

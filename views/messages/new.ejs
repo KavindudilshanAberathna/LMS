@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLMS - MPC | messages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala&family=Noto+Sans+Tamil&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#800000',secondary:'#4B5563'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Poppins', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+        }
+        .sinhala {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+        }
+        .tamil {
+            font-family: 'Noto Sans Tamil', sans-serif;
+        }
+        .sidebar-item.active {
+            background-color: rgba(128, 0, 0, 0.1);
+            color: #800000;
+            border-left: 3px solid #800000;
+        }
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #800000;
+            border-color: #800000;
+        }
+        input[type="checkbox"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 6px;
+            height: 10px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+        }
+        .language-dropdown {
+            position: relative;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            min-width: 150px;
+        }
+        .language-dropdown:hover .language-options {
+            display: block;
+        }
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            min-width: 200px;
+        }
+        .profile-dropdown:hover .profile-options {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 h-16 bg-primary shadow-md z-50 flex items-center justify-between px-4">
+        <div class="flex items-center">
+            <button id="sidebar-toggle" class="md:hidden mr-3 w-8 h-8 flex items-center justify-center text-white">
+                <i class="ri-menu-line ri-lg"></i>
+            </button>
+            <div class="font-['Pacifico'] text-white text-2xl">MPC</div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 flex items-center justify-center text-white relative">
+                <i class="ri-notification-3-line ri-lg"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center text-white relative">
+                <i class="ri-message-3-line ri-lg"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+            </div>
+            <div class="profile-dropdown">
+                <button class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                        <img src="/uploads/<%= user.profilePicture %>" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                </button>
+                <div class="profile-options">
+                    <div class="px-4 py-3 border-b border-gray-200">
+                        <p class="text-sm font-medium"><%= user.fullName %></p>
+                        <p class="text-xs text-gray-500"><%= user.role %></p>
+                    </div>
+                    <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100">
+                        <i class="ri-user-line mr-2"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="/logout" class="flex items-center px-4 py-2 hover:bg-gray-100 text-red-600">
+                        <i class="ri-logout-box-line mr-2"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <% if (user && user.role === 'admin') { %>
+    <%- include('../partials/adminmessagessidebar') %>
+    <% } else if (user && user.role === 'teacher') { %>
+    <%- include('../partials/teachermessages') %>
+    <% } else if (user && user.role === 'student') { %>
+    <%- include('../partials/studentsidebar') %>
+    <% } %>
+
+    <!-- Main Content -->
+    <main class="pt-16 md:pl-60 min-h-screen">
+        <div class="p-4 md:p-6 max-w-7xl mx-auto">
+                <div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-xl">
+  <h2 class="text-2xl font-bold text-blue-700 mb-6">✉️ Send Message</h2>
+
+  <form method="POST" action="/messages" class="space-y-4">
+    <div>
+      <label class="block text-gray-700 font-semibold mb-1">To:</label>
+      <select name="receiver" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <% users.forEach(u => { %>
+          <option value="<%= u._id %>"><%= u.fullName %> - <%= u.role %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-gray-700 font-semibold mb-1">Message:</label>
+      <textarea name="content" rows="5" required class="w-full px-4 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    </div>
+
+    <div class="text-right">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-md transition duration-200">
+        📤 Send
+      </button>
+    <div class="mt-6">
+    <a href="/messages" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+      🔙 Back to Inbox
+    </a>
+  </div>
+    </div>
+    
+  </form>
+</div>
+
+<!-- Optional smooth focus animation -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const fields = document.querySelectorAll('textarea, select');
+    fields.forEach(field => {
+      field.addEventListener('focus', () => {
+        field.classList.add('ring-2', 'ring-blue-400');
+      });
+      field.addEventListener('blur', () => {
+        field.classList.remove('ring-2', 'ring-blue-400');
+      });
+    });
+  });
+</script>
+
+        </div>
+    </main>
+    </body>
+    </html>
+
+
+
+
+

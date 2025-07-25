@@ -1,0 +1,37 @@
+
+
+
+
+
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-4">Attendance Records</h1>
+
+  <% if (attendanceRecords.length === 0) { %>
+    <p>No attendance records found.</p>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto border border-gray-300">
+        <thead>
+          <tr class="bg-gray-100 text-left">
+            <th class="px-4 py-2 border">Student Name</th>
+            <th class="px-4 py-2 border">Subject</th>
+            <th class="px-4 py-2 border">Grade</th>
+            <th class="px-4 py-2 border">Date</th>
+            <th class="px-4 py-2 border">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% attendanceRecords.forEach(record => { %>
+            <tr class="border-b">
+              <td class="px-4 py-2 border"><%= record.student.fullName %></td>
+              <td class="px-4 py-2 border"><%= record.subject %></td>
+              <td class="px-4 py-2 border"><%= record.grade %></td>
+              <td class="px-4 py-2 border"><%= new Date(record.date).toLocaleDateString() %></td>
+              <td class="px-4 py-2 border"><%= record.status %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

@@ -1,0 +1,23 @@
+
+<h1>Edit Subject Allocation</h1>
+<form action="/update-allocation/<%= allocation._id %>" method="POST">
+  <label>Teacher</label>
+  <select name="teacherId">
+    <% teachers.forEach(teacher => { %>
+      <option value="<%= teacher._id %>" <%= teacher._id.equals(allocation.teacher) ? 'selected' : '' %>>
+        <%= teacher.fullName %>
+      </option>
+    <% }) %>
+  </select>
+
+  <label>Subject</label>
+  <input type="text" name="subject" value="<%= allocation.subject %>">
+
+  <label>Class</label>
+  <input type="text" name="className" value="<%= allocation.className %>">
+
+  <label>Section</label>
+  <input type="text" name="section" value="<%= allocation.section %>">
+
+  <button type="submit">Update</button>
+</form>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLMS - MPC | Register </title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#800000',secondary:''},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fafafa;
+        }
+        .form-input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0 16px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .form-input:focus {
+            border-color: #800000;
+            box-shadow: 0 0 0 2px rgba(128, 0, 0, 0.1);
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+        .required:after {
+            content: "*";
+            color: #FF3B30;
+            margin-left: 4px;
+        }
+        .radio-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .radio-input {
+            display: none;
+        }
+        .radio-mark {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #d1d5db;
+            margin-right: 8px;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .radio-mark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #800000;
+        }
+        .radio-input:checked + .radio-mark {
+            border-color: #800000;
+        }
+        .radio-input:checked + .radio-mark:after {
+            display: block;
+        }
+        .password-strength {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+        .strength-weak { width: 25%; background-color: #FF3B30; }
+        .strength-medium { width: 50%; background-color: #FFCC00; }
+        .strength-strong { width: 75%; background-color: #34C759; }
+        .strength-very-strong { width: 100%; background-color: #34C759; }
+
+        .flash-message {
+            animation: slideIn 0.5s ease, fadeOut 0.5s ease 3.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(20px); }
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="px-6 py-4 flex items-center justify-between border-b border-gray-100">
+        <a href="/" class="font-['Pacifico'] text-2xl text-primary">MPC</a>
+        <a href="/" class="text-primary font-medium flex items-center">
+            <span class="w-5 h-5 flex items-center justify-center mr-1">
+                <i class="ri-arrow-left-line"></i>
+            </span>
+            Back to Home
+        </a>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="w-full max-w-[480px] mx-auto">
+            <div class="bg-white rounded-md shadow-[0px_4px_12px_rgba(0,0,0,0.08)] p-6 md:p-8">
+                <h1 class="text-2xl font-bold text-[#1A1A1A] mb-6">Create Your Account</h1>
+                
+                <form id="registrationForm" action="/register" method="POST" enctype="multipart/form-data">
+                    <!-- User Type Selection -->
+                    <div class="mb-6">
+                        <label class="form-label">I am a</label>
+                        <div class="flex space-x-6">
+                            <label class="radio-container">
+                                <input type="radio" name="role" value="teacher" class="radio-input" checked>
+                                <span class="radio-mark"></span>
+                                Teacher
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="role" value="parent" class="radio-input">
+                                <span class="radio-mark"></span>
+                                Parent
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Full Name Input -->
+                    <div class="mb-5">
+                        <label for="fullName" class="form-label required">Full Name</label>
+                        <input type="text" name="fullName" required id="fullName" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <!-- Email Input -->
+                    <div class="mb-5">
+                        <label for="email" class="form-label required">Email Address</label>
+                        <input type="email" name="email" id="email" class="form-input" placeholder="Enter your email address" required>
+                    </div>
+                    
+                    <!-- Password Input -->
+                    <div class="mb-6">
+                        <label for="password" class="form-label required">Password</label>
+                        <div class="relative">
+                            <input type="password" name="password" id="password" class="form-input pr-10" placeholder="Create a password" required>
+                            <button type="button"  id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-500">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength mt-2">
+                            <div id="strengthBar" class="strength-bar"></div>
+                        </div>
+                        <p id="passwordStrengthText" class="text-xs mt-1 text-gray-500">Password strength: Enter at least 8 characters</p>
+                    </div>
+                    
+                    <!-- Profile Picture Upload -->
+                    <div class="mb-6">
+                        <label class="form-label">Profile Picture</label>
+                        <div class="flex items-center">
+                            <div id="profilePreview" class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+                                <i class="ri-user-line text-gray-400 text-2xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <label for="profileUpload" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button cursor-pointer inline-block whitespace-nowrap hover:bg-gray-200 transition">
+                                    Upload Photo
+                                </label>
+                                <input type="file" name="profilePicture" id="profileUpload" class="hidden" accept="image/*">
+                                <p class="text-xs text-gray-500 mt-1">JPG, PNG or GIF (max. 2MB)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Child Email Input (Conditional) -->
+                    <div id="childEmailContainer" class="mb-6 hidden">
+                        <label for="childEmail" class="form-label required">Child's Email Address</label>
+                        <input type="email" name="childEmail"  id="childEmail" class="form-input" placeholder="Enter your child's email address">
+                        <p class="text-xs text-gray-500 mt-1">We'll send an invitation to your child</p>
+                    </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="mb-6">
+                        <label class="flex items-start cursor-pointer">
+                            <div class="relative flex items-center mt-0.5">
+                                <input type="checkbox" id="termsCheckbox" class="opacity-0 absolute h-5 w-5">
+                                <div class="h-5 w-5 border-2 border-gray-300 rounded flex items-center justify-center">
+                                    <svg class="fill-current hidden w-3 h-3 text-primary pointer-events-none" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+                                </div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-700">I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a></span>
+                        </label>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitButton" class="w-full h-12 bg-primary text-white font-medium rounded-button flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap">
+                        Create Account
+                    </button>
+                    
+                    <!-- Sign In Link -->
+                    <p class="text-center mt-6 text-gray-600">
+                        Already have an account? <a href="/login" class="text-primary font-medium">Sign In</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <% if (success_msg && success_msg.length > 0) { %>
+    <div class="flash-message fixed bottom-5 right-5 bg-green-100 text-green-800 px-5 py-3 rounded-lg shadow-lg z-50">
+        <i class="ri-check-line mr-2"></i> <%= success_msg %>
+    </div>
+<% } %>
+
+<% if (error_msg && error_msg.length > 0) { %>
+    <div class="flash-message fixed bottom-5 right-5 bg-red-100 text-red-800 px-5 py-3 rounded-lg shadow-lg z-50">
+        <i class="ri-close-line mr-2"></i> <%= error_msg %>
+    </div>
+<% } %>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon
+                const iconClass = type === 'password' ? 'ri-eye-line' : 'ri-eye-off-line';
+                togglePassword.innerHTML = `<i class="${iconClass}"></i>`;
+            });
+            
+            // Password strength indicator
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 8) strength += 1;
+                if (password.match(/[A-Z]/)) strength += 1;
+                if (password.match(/[0-9]/)) strength += 1;
+                if (password.match(/[^A-Za-z0-9]/)) strength += 1;
+                
+                switch (strength) {
+                    case 0:
+                        strengthBar.className = 'strength-bar';
+                        strengthText.textContent = 'Password strength: Enter at least 8 characters';
+                        strengthText.className = 'text-xs mt-1 text-gray-500';
+                        break;
+                    case 1:
+                        strengthBar.className = 'strength-bar strength-weak';
+                        strengthText.textContent = 'Password strength: Weak';
+                        strengthText.className = 'text-xs mt-1 text-[#FF3B30]';
+                        break;
+                    case 2:
+                        strengthBar.className = 'strength-bar strength-medium';
+                        strengthText.textContent = 'Password strength: Medium';
+                        strengthText.className = 'text-xs mt-1 text-[#FFCC00]';
+                        break;
+                    case 3:
+                        strengthBar.className = 'strength-bar strength-strong';
+                        strengthText.textContent = 'Password strength: Strong';
+                        strengthText.className = 'text-xs mt-1 text-[#34C759]';
+                        break;
+                    case 4:
+                        strengthBar.className = 'strength-bar strength-very-strong';
+                        strengthText.textContent = 'Password strength: Very Strong';
+                        strengthText.className = 'text-xs mt-1 text-[#34C759]';
+                        break;
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show/hide child email based on user type
+            const userTypeRadios = document.querySelectorAll('input[name="role"]');
+            const childEmailContainer = document.getElementById('childEmailContainer');
+            
+            userTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'parent') {
+                        childEmailContainer.classList.remove('hidden');
+                    } else {
+                        childEmailContainer.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Profile picture upload preview
+            const profileUpload = document.getElementById('profileUpload');
+            const profilePreview = document.getElementById('profilePreview');
+            
+            profileUpload.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePreview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Custom checkbox
+            const checkbox = document.getElementById('termsCheckbox');
+            const checkboxSvg = checkbox.nextElementSibling.querySelector('svg');
+            
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    checkboxSvg.classList.remove('hidden');
+                    this.nextElementSibling.classList.add('border-primary');
+                    this.nextElementSibling.classList.remove('border-gray-300');
+                } else {
+                    checkboxSvg.classList.add('hidden');
+                    this.nextElementSibling.classList.remove('border-primary');
+                    this.nextElementSibling.classList.add('border-gray-300');
+                }
+                
+                validateForm();
+            });
+            
+            // Form validation
+            const form = document.getElementById('registrationForm');
+            const submitButton = document.getElementById('submitButton');
+            const fullNameInput = document.getElementById('fullName');
+            const emailInput = document.getElementById('email');
+            const childEmailInput = document.getElementById('childEmail');
+            
+            function validateForm() {
+                const isParent = document.querySelector('input[name="userType"]:checked').value === 'parent';
+                const isValid = 
+                    fullNameInput.value.trim() !== '' && 
+                    emailInput.value.trim() !== '' && 
+                    passwordInput.value.length >= 8 &&
+                    checkbox.checked &&
+                    (!isParent || childEmailInput.value.trim() !== '');
+                
+                submitButton.disabled = !isValid;
+            }
+            
+            fullNameInput.addEventListener('input', validateForm);
+            emailInput.addEventListener('input', validateForm);
+            childEmailInput.addEventListener('input', validateForm);
+            passwordInput.addEventListener('input', validateForm);
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Form submission logic would go here
+                alert('Account created successfully!');
+            });
+        });
+    </script>
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.flash-message').forEach(msg => msg.remove());
+        }, 4000);
+
+    </script>
+
+    
+</body>
+</html>

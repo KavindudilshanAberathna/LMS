@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Assignment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-[#800000]">
+  <div class="max-w-3xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Edit Assignment</h1>
+
+    <form method="POST" action="/dashboard/admin/subjects/edit-assignment/<%= assignment._id %>" class="space-y-6">
+      <div>
+        <label class="block mb-2">Subject:</label>
+        <p class="font-semibold"><%= assignment.subject %></p>
+      </div>
+
+      <div>
+        <label for="teacherId" class="block mb-2">Assigned Teacher:</label>
+        <select name="teacherId" id="teacherId" class="border p-2 w-full rounded" required>
+          <% teachers.forEach(t => { %>
+            <option value="<%= t._id %>" <%= assignment.teacher._id.toString() === t._id.toString() ? 'selected' : '' %>>
+              <%= t.fullName %> (<%= t.email %>)
+            </option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div>
+        <label for="grade" class="block mb-2">Grade:</label>
+        <select name="grade" id="grade" class="border p-2 w-full rounded" required>
+          <option value="All" <%= assignment.grade === 0 ? 'selected' : '' %>>All</option>
+          <% for (let i = 6; i <= 13; i++) { %>
+            <option value="<%= i %>" <%= assignment.grade === i ? 'selected' : '' %>>Grade <%= i %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <button type="submit" class="bg-[#800000] text-white px-4 py-2 rounded">Save Changes</button>
+    </form>
+  </div>
+</body>
+</html>

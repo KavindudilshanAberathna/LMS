@@ -1,0 +1,34 @@
+<h2>All Grades</h2>
+
+<table border="1">
+  <tr>
+    <th>Student</th>
+    <th>Class</th>
+    <th>Subject</th>
+    <th>Score</th>
+    <th>Max</th>
+    <th>Term</th>
+    <th>Teacher</th>
+    <th>Date</th>
+    <th>Actions</th>
+  </tr>
+
+  <% grades.forEach(g => { %>
+    <tr>
+      <td><%= g.student?.name %></td>
+      <td><%= g.student?.className %></td>
+      <td><%= g.subject %></td>
+      <td><%= g.score %></td>
+      <td><%= g.maxScore %></td>
+      <td><%= g.term %></td>
+      <td><%= g.teacher?.name %></td>
+      <td><%= new Date(g.createdAt).toDateString() %></td>
+      <td>
+        <a href="/grades/edit/<%= g._id %>">Edit</a>
+        <form action="/grades/delete/<%= g._id %>" method="POST" style="display:inline;">
+          <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
